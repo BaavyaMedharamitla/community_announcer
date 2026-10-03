@@ -1,0 +1,35 @@
+CREATE TABLE groups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT DEFAULT '',
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  group_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+);
+
+CREATE TABLE announcements (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  group_id INTEGER NOT NULL,
+  subject TEXT NOT NULL,
+  body TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+);
+
+CREATE TABLE deliveries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  announcement_id INTEGER NOT NULL,
+  member_id INTEGER NOT NULL,
+  status TEXT NOT NULL,
+  error TEXT DEFAULT '',
+  sent_at TEXT,
+  FOREIGN KEY (announcement_id) REFERENCES announcements(id) ON DELETE CASCADE,
+  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+);
